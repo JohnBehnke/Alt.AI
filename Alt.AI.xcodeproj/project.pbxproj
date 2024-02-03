@@ -8,21 +8,27 @@
 
 /* Begin PBXBuildFile section */
 		52FB7EF72B6EB84200B2D27F /* Alt_AIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7EF62B6EB84200B2D27F /* Alt_AIApp.swift */; };
-		52FB7EF92B6EB84200B2D27F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7EF82B6EB84200B2D27F /* ContentView.swift */; };
-		52FB7EFB2B6EB84200B2D27F /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7EFA2B6EB84200B2D27F /* Item.swift */; };
+		52FB7EF92B6EB84200B2D27F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7EF82B6EB84200B2D27F /* MainView.swift */; };
 		52FB7EFD2B6EB84300B2D27F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52FB7EFC2B6EB84300B2D27F /* Assets.xcassets */; };
 		52FB7F012B6EB84300B2D27F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52FB7F002B6EB84300B2D27F /* Preview Assets.xcassets */; };
+		52FB7F092B6EBA9300B2D27F /* Prompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7F082B6EBA9300B2D27F /* Prompt.swift */; };
+		52FB7F0B2B6EBB7E00B2D27F /* NSImage+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7F0A2B6EBB7E00B2D27F /* NSImage+Base64.swift */; };
+		52FB7F0F2B6EBC0300B2D27F /* OpenAIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7F0E2B6EBC0300B2D27F /* OpenAIResponse.swift */; };
+		52FB7F112B6EBE2E00B2D27F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52FB7F102B6EBE2E00B2D27F /* SettingsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		52FB7EF32B6EB84200B2D27F /* Alt.AI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Alt.AI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		52FB7EF62B6EB84200B2D27F /* Alt_AIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alt_AIApp.swift; sourceTree = "<group>"; };
-		52FB7EF82B6EB84200B2D27F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		52FB7EFA2B6EB84200B2D27F /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		52FB7EF82B6EB84200B2D27F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		52FB7EFC2B6EB84300B2D27F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		52FB7EFE2B6EB84300B2D27F /* Alt_AI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Alt_AI.entitlements; sourceTree = "<group>"; };
 		52FB7F002B6EB84300B2D27F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		52FB7F022B6EB84300B2D27F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		52FB7F082B6EBA9300B2D27F /* Prompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prompt.swift; sourceTree = "<group>"; };
+		52FB7F0A2B6EBB7E00B2D27F /* NSImage+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Base64.swift"; sourceTree = "<group>"; };
+		52FB7F0E2B6EBC0300B2D27F /* OpenAIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAIResponse.swift; sourceTree = "<group>"; };
+		52FB7F102B6EBE2E00B2D27F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,9 +61,11 @@
 		52FB7EF52B6EB84200B2D27F /* Alt.AI */ = {
 			isa = PBXGroup;
 			children = (
+				52FB7F0D2B6EBBF300B2D27F /* Models */,
+				52FB7F0C2B6EBB8300B2D27F /* Extensions */,
 				52FB7EF62B6EB84200B2D27F /* Alt_AIApp.swift */,
-				52FB7EF82B6EB84200B2D27F /* ContentView.swift */,
-				52FB7EFA2B6EB84200B2D27F /* Item.swift */,
+				52FB7EF82B6EB84200B2D27F /* MainView.swift */,
+				52FB7F102B6EBE2E00B2D27F /* SettingsView.swift */,
 				52FB7EFC2B6EB84300B2D27F /* Assets.xcassets */,
 				52FB7EFE2B6EB84300B2D27F /* Alt_AI.entitlements */,
 				52FB7F022B6EB84300B2D27F /* Info.plist */,
@@ -72,6 +80,23 @@
 				52FB7F002B6EB84300B2D27F /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		52FB7F0C2B6EBB8300B2D27F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				52FB7F0A2B6EBB7E00B2D27F /* NSImage+Base64.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		52FB7F0D2B6EBBF300B2D27F /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				52FB7F082B6EBA9300B2D27F /* Prompt.swift */,
+				52FB7F0E2B6EBC0300B2D27F /* OpenAIResponse.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,9 +169,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				52FB7EF92B6EB84200B2D27F /* ContentView.swift in Sources */,
-				52FB7EFB2B6EB84200B2D27F /* Item.swift in Sources */,
+				52FB7F0F2B6EBC0300B2D27F /* OpenAIResponse.swift in Sources */,
+				52FB7EF92B6EB84200B2D27F /* MainView.swift in Sources */,
+				52FB7F092B6EBA9300B2D27F /* Prompt.swift in Sources */,
+				52FB7F112B6EBE2E00B2D27F /* SettingsView.swift in Sources */,
 				52FB7EF72B6EB84200B2D27F /* Alt_AIApp.swift in Sources */,
+				52FB7F0B2B6EBB7E00B2D27F /* NSImage+Base64.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -295,14 +323,15 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2024.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "xyz.behnke.Alt-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Debug;
 		};
@@ -334,14 +363,15 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 2024.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "xyz.behnke.Alt-AI";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 			};
 			name = Release;
 		};

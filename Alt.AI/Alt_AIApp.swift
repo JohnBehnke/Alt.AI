@@ -19,6 +19,7 @@ struct Alt_AIApp: App {
             }
             .fixedSize(horizontal: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/, vertical: false)
             .frame(width: 350)
+            .frame(maxHeight: 500)
             .background(VisualEffectView().ignoresSafeArea())
             
         }

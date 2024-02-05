@@ -13,7 +13,8 @@ struct MainView: View {
     @AppStorage("OpenAIAPIKey") var apiKey: String = ""
     @AppStorage("isAPIKeyValid") var isAPIKeyValid: APIKeyStatus = .unknown
     @AppStorage("maxTokenAmount") var maxTokenCount: Int = 25
-    
+    @AppStorage("totalTokenUsage") var totalTokenUsage: Int = 0
+    @AppStorage("numberOfUploadedImages") var numberOfUploadedImages: Int = 0
     
     @State private var image = Image(systemName: "photo")
     @State private var selectedNSImage: NSImage?
@@ -58,7 +59,7 @@ struct MainView: View {
                 .padding()
                 .frame(maxWidth: 300)
             }
-            .frame(maxHeight: 200)
+            .frame(maxHeight: 300)
             HStack(spacing: 5){
                 Text("^[\(tokenCount ?? 0) token](inflect: true)")
                 Text("(\(Decimal((Double(tokenCount ?? 0) * 0.001 / 100.0)), format: .currency(code: "USD").precision(.fractionLength(2...10))))")
@@ -91,8 +92,10 @@ struct MainView: View {
                 .disabled(alt == nil)
                 
             }
+            
             .font(.caption2)
             .fontWeight(.light)
+            
         }
         .padding(.top, -30)
         .onChange(of: selectedNSImage) {
@@ -100,6 +103,8 @@ struct MainView: View {
                 
                 if let selectedNSImage {
                     selectedImage = Image(nsImage: selectedNSImage)
+                    alt = nil
+                    tokenCount = 0
                     fetchingResponse.toggle()
                     let resp = await sendImageToOpenAI(imageBase64: selectedNSImage.base64!)
                     fetchingResponse.toggle()
@@ -144,6 +149,8 @@ struct MainView: View {
             
             if let responseString = String(data: data, encoding: .utf8) {
                 let extract = extractContent(from: responseString)
+                numberOfUploadedImages += 1
+                totalTokenUsage += extract.1
                 return extract
             }
         } catch {

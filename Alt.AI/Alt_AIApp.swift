@@ -29,7 +29,6 @@ struct Alt_AIApp: App {
         
         Settings {
             SettingsView()
-                .frame(width: 400, height: 200)
         }
         .windowResizability(.automatic)
         

@@ -15,6 +15,7 @@ struct MainView: View {
     @AppStorage("maxTokenAmount") var maxTokenCount: Int = 25
     @AppStorage("totalTokenUsage") var totalTokenUsage: Int = 0
     @AppStorage("numberOfUploadedImages") var numberOfUploadedImages: Int = 0
+    @AppStorage("prompt") var prompt: String = "What is in this image? This description will be used as alt text. Don't be overly descriptive, don't write in the first person, don't be overly descriptive or wordy."
     
     @State private var image = Image(systemName: "photo")
     @State private var selectedNSImage: NSImage?
@@ -129,7 +130,7 @@ struct MainView: View {
                 [
                     "role": "user",
                     "content": [
-                        ["type": "text", "text": "What’s in this image? Be brief, it's for image alt description on a social network. Don't write in the first person. Don't be overly wordy either."],
+                        ["type": "text", "text": "\(prompt)"],
                         ["type": "image_url", "image_url": ["url": "data:image/jpeg;base64,\(imageBase64)"]]
                     ]
                 ]

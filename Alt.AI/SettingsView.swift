@@ -13,57 +13,92 @@ struct SettingsView: View {
     @AppStorage("maxTokenAmount") var maxTokenCount: Int = 25
     @AppStorage("totalTokenUsage") var totalTokenUsage: Int = 0
     @AppStorage("numberOfUploadedImages") var numberOfUploadedImages: Int = 0
+    @AppStorage("prompt") var prompt: String = "What is in this image? This description will be used as alt text. Don't be overly descriptive, don't write in the first person, don't be overly descriptive or wordy."
     @State private var keyStatusColor: Color = .yellow
     @State private var editingTokenCount: Bool = false
     
     var body: some View {
         TabView {
-            VStack {
-                VStack {
+            Form {
+                VStack(spacing: 20) {
+                    VStack {
+                        HStack {
+                            Text("OpenAI API Key:")
+                            TextField(text: $apiKey, label: {Text("")})
+                                .textFieldStyle(.roundedBorder)
+                        }
+                        HStack {
+                            Spacer()
+                            Button {
+                                Task {
+                                    do {
+                                        let status: ModelListResponse.OpenAIKeyResponse = try await fetchOpenAIModels(apiKey: apiKey)
+                                        
+                                        switch status {
+                                        case .validKey:
+                                            isAPIKeyValid = .valid
+                                        case .invalidKey:
+                                            isAPIKeyValid = .invalid
+                                        default:
+                                            isAPIKeyValid = .unknown
+                                        }
+                                    } catch {
+                                        print(error.localizedDescription)
+                                    }
+                                }
+                            } label: {
+                                Text("Test API Key")
+                            }
+                            Circle()
+                                .frame(width: 8)
+                                .foregroundStyle(isAPIKeyValid == .valid ? .green : isAPIKeyValid == .invalid ? .red : .yellow)
+                        }
+                    }
                     HStack {
-                        Text("OpenAI API Key:")
-                        TextField(text: $apiKey, label: {Text("")})
+                        Text("Max token count:")
+                        TextField("", value: $maxTokenCount, format: .number)
                             .textFieldStyle(.roundedBorder)
                     }
-                    HStack {
-                        Spacer()
-                        Button {
-                            Task {
-                                do {
-                                    let status: ModelListResponse.OpenAIKeyResponse = try await fetchOpenAIModels(apiKey: apiKey)
-                                    
-                                    switch status {
-                                    case .validKey:
-                                        isAPIKeyValid = .valid
-                                    case .invalidKey:
-                                        isAPIKeyValid = .invalid
-                                    default:
-                                        isAPIKeyValid = .unknown
-                                    }
-                                } catch {
-                                    print(error.localizedDescription)
+                    VStack {
+                        HStack(alignment: .top) {
+                            Text("Prompt")
+                            ZStack(alignment: .topLeading) {
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(.white)
+                                
+                                if prompt.isEmpty {
+                                    Text("Enter your prompt...")
+                                        .foregroundColor(.white)
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 12)
                                 }
+                                
+                                TextEditor(text: $prompt)
+                                    .padding(10)
+                                    .textEditorStyle(.plain)
+                                    .lineSpacing(5)
+                                
                             }
-                        } label: {
-                            Text("Test API Key")
+                            .font(.body)
+                            .frame(height: 200)
                         }
-                        Circle()
-                            .frame(width: 8)
-                            .foregroundStyle(isAPIKeyValid == .valid ? .green : isAPIKeyValid == .invalid ? .red : .yellow)
+                        HStack {
+                            Spacer()
+                            Button {
+                                prompt = "What is in this image? This description will be used as alt text. Don't be overly descriptive, don't write in the first person, don't be overly descriptive or wordy."
+                            } label: {
+                                Text("Reset to default")
+                            }
+                        }
                     }
                 }
-                HStack {
-                    Text("Max token count:")
-                    TextField("", value: $maxTokenCount, format: .number)
-                        .textFieldStyle(.roundedBorder)
-                }
-                
-                
             }
+            .frame(width: 500, height: 400)
             .padding()
             .tabItem {
                 Label("General", systemImage: "gear")
             }
+            
             VStack {
                 Form {
                     Section(
@@ -99,7 +134,7 @@ struct SettingsView: View {
                 .formStyle(.grouped)
                
             }
-            
+            .frame(width: 300, height: 200)
             .tabItem {
                 Label("Usage", systemImage: "chart.bar.fill")
             }

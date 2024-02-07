@@ -17,28 +17,74 @@ struct MainView: View {
     @AppStorage("numberOfUploadedImages") var numberOfUploadedImages: Int = 0
     @AppStorage("prompt") var prompt: String = "What is in this image? This description will be used as alt text. Don't be overly descriptive, don't write in the first person, don't be overly descriptive or wordy."
     
-    @State private var image = Image(systemName: "photo")
+    @State private var image: Image?
     @State private var selectedNSImage: NSImage?
     @State private var selectedImage: Image?
     @State private var alt: String?
     @State private var tokenCount: Int?
     @State private var fetchingResponse: Bool = false
+    @State private var loadingImage: Bool = false
     
     
     var body: some View {
         VStack(spacing: 10) {
-            image
-                .resizable()
-                .scaledToFill()
-                .frame(width: 300, height: 300)
-                .clipped()
-                .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
-                .dropDestination(for: Data.self) { items, location in
-                    guard let item = items.first else { return false }
-                    selectedNSImage = NSImage(data: item)
-                    image = Image(nsImage: selectedNSImage!)
-                    return true
+            ZStack {
+               
+                
+                if image == nil {
+                    RoundedRectangle(cornerRadius: 5, style: .continuous)
+                        .stroke(style: StrokeStyle(lineWidth: 3, dash: [10]))
+                        .frame(width: 300, height: 300)
+                        .foregroundStyle(.quaternary)
+                    ZStack {
+                        VStack {
+                            Image(systemName: "photo.badge.arrow.down")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100)
+                                .foregroundStyle(.gray)
+                            Text("Drag and drop your image here")
+                                .foregroundStyle(.gray)
+                        }
+                            
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .foregroundStyle(.clear)
+                            .frame(width: 300, height: 300)
+                            .dropDestination(for: Data.self) { items, location in
+                                guard let item: Data = items.first else { return false }
+                                selectedNSImage = NSImage(data: item)
+                                image = Image(nsImage: selectedNSImage!)
+                                return true
+                            }
+                        
+                    }
+                    
                 }
+                 else if !loadingImage {
+                    
+                     image?
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 300, height: 300)
+                        .clipped()
+                        .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+                        .dropDestination(for: Data.self) { items, location in
+                            guard let item = items.first else { return false }
+                            selectedNSImage = NSImage(data: item)
+                            image = Image(nsImage: selectedNSImage!)
+                            return true
+                        }
+                }
+                else {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 5, style: .continuous)
+                            .stroke(style: StrokeStyle(lineWidth: 3, dash: [10]))
+                            .frame(width: 300, height: 300)
+                            .foregroundStyle(.quaternary)
+                        ProgressView()
+                    }
+                }
+            }
             
             GroupBox {
                 ScrollView {
@@ -79,8 +125,10 @@ struct MainView: View {
                             alt = nil
                             tokenCount = 0
                             selectedImage = Image(nsImage: selectedNSImage)
+                            let selectedImageAsJPG: Data = selectedNSImage.jpgRepresentation!
+                            let base64EncodedImage: String = selectedImageAsJPG.base64EncodedString()
                             fetchingResponse = true
-                            let resp = await sendImageToOpenAI(imageBase64: selectedNSImage.base64!)
+                            let resp = await sendImageToOpenAI(imageBase64: base64EncodedImage)
                             fetchingResponse = false
                             alt = resp.0
                             tokenCount = resp.1
@@ -100,14 +148,23 @@ struct MainView: View {
         }
         .padding(.top, -30)
         .onChange(of: selectedNSImage) {
+            loadingImage = true
             Task {
                 
                 if let selectedNSImage {
+                   
                     selectedImage = Image(nsImage: selectedNSImage)
+                    let selectedImageAsJPG: Data = selectedNSImage.jpgRepresentation!
+                    let base64EncodedImage: String = selectedImageAsJPG.base64EncodedString()
+                    if selectedImageAsJPG.count > 20_000_000 {
+                        print("File size is too big")
+                        return
+                    }
+                    loadingImage = false
                     alt = nil
                     tokenCount = 0
                     fetchingResponse.toggle()
-                    let resp = await sendImageToOpenAI(imageBase64: selectedNSImage.base64!)
+                    let resp = await sendImageToOpenAI(imageBase64: base64EncodedImage)
                     fetchingResponse.toggle()
                     alt = resp.0
                     tokenCount = resp.1
@@ -179,3 +236,6 @@ struct MainView: View {
     MainView()
 }
 
+enum Fidelity: String {
+    case auto, low, high
+}

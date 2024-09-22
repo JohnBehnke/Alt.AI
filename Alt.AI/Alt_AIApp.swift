@@ -10,23 +10,42 @@ import SwiftData
 
 @main
 struct Alt_AIApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ScrollView {
+                MainView()
+                    .padding(45)
+            }
+            .fixedSize(horizontal: /*@START_MENU_TOKEN@*/true/*@END_MENU_TOKEN@*/, vertical: false)
+            .frame(width: 350)
+            .frame(maxHeight: 500)
+            .background(VisualEffectView().ignoresSafeArea())
+            
         }
-        .modelContainer(sharedModelContainer)
+        .windowStyle(HiddenTitleBarWindowStyle())
+        .windowResizability(.contentSize)
+        
+        
+        Settings {
+            SettingsView()
+        }
+        .windowResizability(.automatic)
+        
+        
     }
+}
+
+struct VisualEffectView: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSVisualEffectView {
+        let view = NSVisualEffectView()
+        
+        view.blendingMode = .behindWindow
+        view.state = .active
+        view.material = .underWindowBackground
+        
+        return view
+    }
+    
+    func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
 }
